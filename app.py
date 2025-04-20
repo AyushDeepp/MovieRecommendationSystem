@@ -60,7 +60,6 @@ def recommendation(movie_name, no_of_movies, genres=None):
     if not len(movie_list):
         return "Movie not found..."
         
-    print(type(movie_list))
     if len(movie_list):
         movie_index = movie_list.iloc[0]['movieId']
         movie_index = final_dataset[final_dataset['movieId'] == movie_index].index[0]
@@ -70,7 +69,8 @@ def recommendation(movie_name, no_of_movies, genres=None):
         indices_list = indices.squeeze().tolist()
         distances_list = distances.squeeze().tolist()
         index_distance_pairs = list(zip(indices_list, distances_list))
-        rec_movies_indices = sorted(index_distance_pairs[1:], key=lambda x: x[1], reverse=True)
+        # Change sorting order: smaller distance means more similar
+        rec_movies_indices = sorted(index_distance_pairs[1:], key=lambda x: x[1])  # Remove reverse=True
 
         recommended_movies = []
         for val in rec_movies_indices:
