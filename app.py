@@ -155,13 +155,54 @@ st.markdown("""
         color: #ff4b4b;
         font-weight: bold;
     }
+    
+    /* Autocomplete styling */
+    .stSelectbox {
+        color: #4F8BF9;
+    }
+    
+    .stSelectbox > div > div {
+        background-color: #FFFFFF;
+        border-radius: 5px;
+    }
+    
+    /* Search box styling */
+    .stTextInput > div > div > input {
+        background-color: #FFFFFF;
+        color: #4F8BF9;
+        border-radius: 5px;
+    }
 </style>
 """, unsafe_allow_html=True)
 
+# Add this before the columns
+search_term = st.text_input(
+    "Search for a movie:",
+    help="Type to filter movie suggestions"
+)
+
+# Add after the search input
+if search_term:
+    filtered_movies = [title for title in movie_titles_list 
+                      if search_term.lower() in title.lower()]
+    st.caption(f"Found {len(filtered_movies)} movies matching '{search_term}'")
+
 col1, col2 = st.columns(2)
 with col1:
-    selected_movie = st.text_input("Enter a Movie Name:", 
-                                  help="Type part of the movie name")
+    # Filter movies based on search term
+    if search_term:
+        filtered_movies = [title for title in movie_titles_list 
+                         if search_term.lower() in title.lower()]
+    else:
+        filtered_movies = movie_titles_list
+
+    selected_movie = st.selectbox(
+        "Select a Movie:",
+        options=filtered_movies,
+        help="Select a movie from the filtered list",
+        index=None,
+        placeholder="Choose a movie..."
+    )
 with col2:
     no_of_movies = st.number_input("Number of Recommendations:", 
                                   min_value=1, max_value=30, value=5)
