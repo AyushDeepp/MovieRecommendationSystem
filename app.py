@@ -36,7 +36,7 @@ knn.fit(csr_data)
 def get_movie_info(title):
     """Fetch basic movie info from OMDB API"""
     # You'll need to sign up for a free API key at http://www.omdbapi.com/
-    API_KEY = "448e92b8"
+    API_KEY = st.secrets["OMDB_API_KEY"]
     url = f"http://www.omdbapi.com/?t={title}&apikey={API_KEY}"
     
     try:
